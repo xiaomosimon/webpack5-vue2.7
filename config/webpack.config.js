@@ -1,6 +1,6 @@
 'use strict';
 
-const webpack = require('webpack');
+const Webpack = require('webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -379,7 +379,7 @@ module.exports = function (webpackEnv, envConfig) {
     },
     plugins: [
       // 定义全局变量
-      new webpack.DefinePlugin({
+      new Webpack.DefinePlugin({
         webpackDefineEnvConfig: JSON.stringify(envConfig),
       }),
       // vue文件解析

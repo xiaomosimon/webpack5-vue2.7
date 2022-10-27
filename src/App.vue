@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import Button from './components/TFButton.vue';
 import { ref } from 'vue';
-const msg = ref<string>('Simon Liu12');
+const msg = ref<string>('Simon Liu');
 const ButtonRef = ref(null);
 console.log(ButtonRef);
 </script>

@@ -1,8 +1,10 @@
 'use strict';
 
-exports.chalk = require('chalk');
+['logger', 'spinner'].filter((key) => {
+  Object.assign(exports, require(`./${key}.js`));
+});
 
-Object.assign(exports, require(`./logger.js`));
+exports.chalk = require('chalk');
 
 exports.modifyConfig = (config, fn) => {
   if (Array.isArray(config)) {

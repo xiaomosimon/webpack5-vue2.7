@@ -5,10 +5,14 @@ process.env.BABEL_ENV === 'development';
 
 const envConfig = require('../config/env.js');
 const {
-  info,
   error,
   done,
   modifyConfig,
+  logWithSpinner,
+  stopSpinner,
+  pauseSpinner,
+  changeSpinner,
+  resumeSpinner,
 } = require('../config/utils');
 const getCompileTime = require('../config/utils/getCompileTime.js');
 const clearConsole = require('../config/utils/clearConsole.js');
@@ -26,9 +30,12 @@ const webpackDevServerConfig = require('../config/webpackDevServer.config.js')(
   envConfig
 );
 
+// 添加server配置
 modifyConfig(webpackConfig, (config) => {
   config.devServer = { ...webpackDevServerConfig };
 });
+
+logWithSpinner(`启动${envConfig.RUN_ENV}环境开发服务器...\n`);
 
 // compiler
 const compiler = Webpack(webpackConfig);
@@ -38,20 +45,33 @@ const server = new WebpackDevServer(webpackDevServerConfig, compiler);
 
 let watchState = true;
 // 使用内置webpack插件ProgressPlugin进行hooks监听
+compiler.hooks.compilation.tap({ name: 'ProgressPlugin' }, () => {
+  if (watchState) {
+    changeSpinner({
+      text: '项目编译中...\n',
+    });
+  } else {
+    resumeSpinner();
+  }
+});
 compiler.hooks.done.tap({ name: 'ProgressPlugin' }, (stats) => {
   if (!stats.hasErrors() && !stats.hasWarnings()) {
-    const time = getCompileTime(stats);
-    console.log('');
-    done(`编译成功，用时${time}ms`);
     if (watchState) {
-      console.log('');
-      info(
-        `程序运行在: ${webpackDevServerConfig.https ? 'https' : 'http'}://${
-          webpackDevServerConfig.host
-        }:${webpackDevServerConfig.port}`
-      );
+      pauseSpinner();
+      clearConsole();
       watchState = false;
+    } else {
+      pauseSpinner();
     }
+
+    const time = getCompileTime(stats);
+    done(
+      `项目编译成功，用时${time}ms，程序运行在: ${
+        webpackDevServerConfig.https ? 'https' : 'http'
+      }://${webpackDevServerConfig.host}:${webpackDevServerConfig.port}`
+    );
+  } else {
+    pauseSpinner();
   }
 });
 
@@ -65,9 +85,9 @@ compiler.hooks.done.tap({ name: 'ProgressPlugin' }, (stats) => {
 const runServer = async () => {
   await server.start();
   clearConsole();
-  info(`启动${envConfig.RUN_ENV}环境开发服务器...\n`);
 };
 
 runServer().catch(() => {
+  stopSpinner();
   error(new Error('服务器启动失败并出现错误。'));
 });

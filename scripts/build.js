@@ -14,9 +14,11 @@ const {
   error,
   log,
   done,
-  info,
   chalk,
   modifyConfig,
+  logWithSpinner,
+  stopSpinner,
+  changeSpinner,
 } = require('../config/utils');
 const formatWebpackMessages = require('../config/utils/formatWebpackMessages.js');
 const printFileSizesAfterBuild = require('../config/utils/printFileSizesAfterBuild.js');
@@ -36,6 +38,8 @@ if (envConfig.report) {
 }
 
 const watch = envConfig.watch;
+
+// 构建保持监听状态
 if (watch) {
   modifyConfig(webpackConfig, (config) => {
     config.watch = true;
@@ -44,9 +48,26 @@ if (watch) {
     };
   });
 }
+
+// 构建进度
+modifyConfig(webpackConfig, (config) => {
+  config.plugins.push(
+    new Webpack.ProgressPlugin((percentage, message, ...args) => {
+      changeSpinner({
+        text: `构建进度：${Math.round(
+          percentage * 100
+        )}% ${message} ${args.join(' ')}`,
+      });
+    })
+  );
+});
+
+logWithSpinner(`正在启动生成优化后的${envConfig.RUN_ENV}环境的项目包...\n`);
+
+// 运行webpack处理
 new Promise((resolve, reject) => {
   function compilerCallback(err, stats) {
-    info(chalk.green(`正在生成优化后的${envConfig.RUN_ENV}环境的项目包...\n`));
+    stopSpinner(false);
     let messages;
     if (err) {
       // 错误处理
