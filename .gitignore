@@ -1,0 +1,11 @@
+# Development files
+.DS_Store
+node_modules/
+dist/
+
+# .cahce
+.eslintcache
+
+# Editor directories and files
+.idea
+.vscode

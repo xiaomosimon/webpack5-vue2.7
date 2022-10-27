@@ -1,0 +1,78 @@
+{
+  "name": "webpack-level",
+  "version": "0.1.0",
+  "description": "Configure webpack framework for company cli",
+  "private": true,
+  "author": "Simon Liu",
+  "scripts": {
+    "build": "node ./scripts/build.js",
+    "start": "node ./scripts/start.js",
+    "analyzer": "node ./scripts/build.js --report"
+  },
+  "dependencies": {
+    "pinia": "^2.0.23",
+    "vue": "2.7.13",
+    "vue-router": "3.6.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/runtime": "^7.19.4",
+    "@types/lodash": "^4.14.186",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
+    "babel-loader": "^8.2.5",
+    "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "chalk": "4.1.2",
+    "cliui": "^8.0.1",
+    "copy-webpack-plugin": "^11.0.0",
+    "crypto": "^1.0.1",
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "escape-string-regexp": "4.0.0",
+    "eslint": "^8.26.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^9.6.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.13",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "minimist": "^1.2.7",
+    "postcss": "^8.4.18",
+    "postcss-loader": "^7.0.1",
+    "postcss-preset-env": "^7.8.2",
+    "prettier": "^2.7.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0",
+    "strip-ansi": "6.0.1",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.6",
+    "thread-loader": "^3.0.4",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
+    "vue-eslint-parser": "^9.1.0",
+    "vue-loader": "15.10.0",
+    "vue-template-compiler": "^2.7.13",
+    "webpack": "^5.74.0",
+    "webpack-bundle-analyzer": "^4.6.1",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1",
+    "zlib": "^1.0.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">= 16.18.0"
+  }
+}
