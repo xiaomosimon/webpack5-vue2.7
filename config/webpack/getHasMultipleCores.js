@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = () => {
   try {
     return require('os').cpus().length > 1;

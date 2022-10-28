@@ -1,9 +1,9 @@
-'use strict';
+process.env.NODE_ENV = 'development';
+process.env.BABEL_ENV = 'development';
 
-process.env.NODE_ENV === 'development';
-process.env.BABEL_ENV === 'development';
-
-const envConfig = require('../config/env.js');
+const Webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const envConfig = require('../config/env');
 const {
   error,
   done,
@@ -14,18 +14,17 @@ const {
   changeSpinner,
   resumeSpinner,
 } = require('../config/utils');
-const getCompileTime = require('../config/utils/getCompileTime.js');
-const clearConsole = require('../config/utils/clearConsole.js');
+const getCompileTime = require('../config/utils/getCompileTime');
+const clearConsole = require('../config/utils/clearConsole');
 
 // webpack
-const Webpack = require('webpack');
 // webpack-dev-server
-const WebpackDevServer = require('webpack-dev-server');
 // config
-const configFactory = require('../config/webpack.config.js');
+const configFactory = require('../config/webpack.config');
+
 const webpackConfig = configFactory('development', envConfig);
-const proxyConfig = require('../config/proxy.js');
-const webpackDevServerConfig = require('../config/webpackDevServer.config.js')(
+const proxyConfig = require('../config/proxy');
+const webpackDevServerConfig = require('../config/webpackDevServer.config')(
   proxyConfig,
   envConfig
 );

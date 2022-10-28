@@ -1,23 +1,20 @@
-'use strict';
-
 const chalk = require('chalk');
 const stripAnsi = require('strip-ansi'); // 从字符串中去除 ANSI 转义码
 
-const format = (label, msg) => {
-  return msg
+const format = (label, msg) =>
+  msg
     .split('\n')
-    .map((line, i) => {
-      return i === 0
+    .map((line, i) =>
+      i === 0
         ? `${label} ${line}`
-        : line.padStart(stripAnsi(label).length + line.length + 1);
-    })
+        : line.padStart(stripAnsi(label).length + line.length + 1)
+    )
     .join('\n');
-};
 
 const chalkTag = (msg) => chalk.bgBlackBright.white.dim(` ${msg} `);
 
 exports.log = (msg = '', tag = null) => {
-  tag ? console.log(format(chalkTag(tag), msg)) : console.log(msg);
+  console.log(tag ? format(chalkTag(tag), msg) : msg);
 };
 
 exports.info = (msg, tag = null) => {

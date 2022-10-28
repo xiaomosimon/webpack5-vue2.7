@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (stats, appBuild) => {
   const fs = require('fs');
   const path = require('path');
@@ -23,7 +21,7 @@ module.exports = (stats, appBuild) => {
   const isMinJS = (val) => /\.min\.js$/.test(val);
   assets = assets
     .map((a) => {
-      a.name = a.name.split('?')[0];
+      [a.name] = a.name.split('?');
       return a;
     })
     .filter((a) => {
@@ -42,7 +40,7 @@ module.exports = (stats, appBuild) => {
     });
 
   function formatSize(size) {
-    return (size / 1024).toFixed(2) + ' KiB';
+    return `${(size / 1024).toFixed(2)} KiB`;
   }
 
   function getCompressedSize(asset) {
@@ -56,28 +54,26 @@ module.exports = (stats, appBuild) => {
   }
 
   ui.div(
-    makeRow(
+    `${makeRow(
       chalk.cyan.bold(`文件`),
       chalk.cyan.bold(`源大小`),
       chalk.cyan.bold(`压缩后`)
-    ) +
-      `\n\n` +
-      assets
-        .map((asset) =>
-          makeRow(
-            /js$/.test(asset.name)
-              ? chalk.green(asset.name)
-              : chalk.blue(asset.name),
-            formatSize(asset.size),
-            getCompressedSize(asset)
-          )
+    )}\n\n${assets
+      .map((asset) =>
+        makeRow(
+          /js$/.test(asset.name)
+            ? chalk.green(asset.name)
+            : chalk.blue(asset.name),
+          formatSize(asset.size),
+          getCompressedSize(asset)
         )
-        .join(`\n`)
+      )
+      .join(`\n`)}`
   );
 
   const time = stats.endTime - stats.startTime;
   const now = new Date().toISOString();
-  const hash = stats.hash;
+  const { hash } = stats;
   const info = `结束时间: ${chalk.white(now)}
   构建目录: ${chalk.white(appBuild)}
   项目哈希: ${chalk.white(hash)}

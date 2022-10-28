@@ -1,5 +1,3 @@
-'use strict';
-
 const Webpack = require('webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -12,11 +10,11 @@ const CopyPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const paths = require('./paths.js');
-const createEnvironmentHash = require('./webpack/createEnvironmentHash.js');
-const getHasMultipleCores = require('./webpack/getHasMultipleCores.js');
+const paths = require('./paths');
+const createEnvironmentHash = require('./webpack/createEnvironmentHash');
+const getHasMultipleCores = require('./webpack/getHasMultipleCores');
 
-module.exports = function (webpackEnv, envConfig) {
+module.exports = (webpackEnv, envConfig) => {
   const isEnvProduction = webpackEnv === 'production';
   const isEnvDevelopment = webpackEnv === 'development';
   const shouldUseSourceMap = envConfig.sourcemap;
@@ -385,34 +383,29 @@ module.exports = function (webpackEnv, envConfig) {
       // vue文件解析
       new VueLoaderPlugin(),
       // html
-      new HtmlWebpackPlugin(
-        Object.assign(
-          {},
-          {
-            title: '测试项目',
-            inject: true,
-            scriptLoading: 'defer',
-            template: paths.appHtml,
-          },
-          isEnvProduction
-            ? {
-                minify: {
-                  // 使用html-minifier-terser
-                  removeComments: true,
-                  collapseWhitespace: true,
-                  removeRedundantAttributes: true,
-                  useShortDoctype: true,
-                  removeEmptyAttributes: true,
-                  removeStyleLinkTypeAttributes: true,
-                  keepClosingSlash: true,
-                  minifyJS: true,
-                  minifyCSS: true,
-                  minifyURLs: true,
-                },
-              }
-            : undefined
-        )
-      ),
+      new HtmlWebpackPlugin({
+        title: '测试项目',
+        inject: true,
+        scriptLoading: 'defer',
+        template: paths.appHtml,
+        ...(isEnvProduction
+          ? {
+              minify: {
+                // 使用html-minifier-terser
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+          : undefined),
+      }),
       // 压缩css
       isEnvProduction &&
         new MiniCssExtractPlugin({

@@ -1,7 +1,6 @@
-'use strict';
-
-['logger', 'spinner'].filter((key) => {
-  Object.assign(exports, require(`./${key}.js`));
+['logger', 'spinner'].forEach((key) => {
+  const filename = `./${key}`;
+  Object.assign(exports, filename);
 });
 
 exports.chalk = require('chalk');

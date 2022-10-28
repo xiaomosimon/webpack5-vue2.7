@@ -1,11 +1,9 @@
-'use strict';
-
 // 获取命令行传参
-let parseArgv = require('minimist')(process.argv.slice(2));
+const parseArgv = require('minimist')(process.argv.slice(2));
 
 // 解析运行时环境
 const buildEnvEnum = ['dev', 'local', 'qa', 'preview', 'prod'];
-const automatedDeploymentConfigArray = parseArgv['_'];
+const automatedDeploymentConfigArray = parseArgv._;
 let runEnv =
   automatedDeploymentConfigArray[automatedDeploymentConfigArray.length - 1];
 if (!buildEnvEnum.includes(runEnv)) {
@@ -20,7 +18,7 @@ const automatedDeploymentConfig = automatedDeploymentConfigArray
   }, {});
 
 // 删除运行时环境
-delete parseArgv['_'];
+delete parseArgv._;
 
 // 解析命令行参数
 module.exports = Object.keys(parseArgv).reduce(

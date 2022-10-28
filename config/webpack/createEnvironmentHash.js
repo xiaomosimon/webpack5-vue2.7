@@ -1,5 +1,3 @@
-'use strict';
-
 const { createHash } = require('crypto');
 
 module.exports = env => {

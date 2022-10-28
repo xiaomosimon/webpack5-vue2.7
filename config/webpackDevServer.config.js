@@ -1,9 +1,7 @@
-'use strict';
+const paths = require('./paths');
+const ignoredFiles = require('./webpack/ignoredFiles');
 
-const paths = require('./paths.js');
-const ignoredFiles = require('./webpack/ignoredFiles.js');
-
-module.exports = function (proxy, envConfig, allowedHosts = []) {
+module.exports = (proxy, envConfig, allowedHosts = []) => {
   const host =
     typeof envConfig.host === 'string' ? envConfig.host : 'localhost';
   const port = typeof envConfig.port === 'string' ? envConfig.port : 6767;

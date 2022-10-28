@@ -1,15 +1,13 @@
-'use strict';
-
 const ANALYZER_PORT = 7676;
 const SCRIPTS_ENV = 'production';
 // const SCRIPTS_ENV = 'development';
-process.env.NODE_ENV === SCRIPTS_ENV;
-process.env.BABEL_ENV === SCRIPTS_ENV;
+process.env.NODE_ENV = SCRIPTS_ENV;
+process.env.BABEL_ENV = SCRIPTS_ENV;
 
 const Webpack = require('webpack');
-const paths = require('../config/paths.js');
-const configFactory = require('../config/webpack.config.js');
-const envConfig = require('../config/env.js');
+const paths = require('../config/paths');
+const configFactory = require('../config/webpack.config');
+const envConfig = require('../config/env');
 const {
   error,
   log,
@@ -20,8 +18,8 @@ const {
   stopSpinner,
   changeSpinner,
 } = require('../config/utils');
-const formatWebpackMessages = require('../config/utils/formatWebpackMessages.js');
-const printFileSizesAfterBuild = require('../config/utils/printFileSizesAfterBuild.js');
+const formatWebpackMessages = require('../config/utils/formatWebpackMessages');
+const printFileSizesAfterBuild = require('../config/utils/printFileSizesAfterBuild');
 
 const webpackConfig = configFactory(SCRIPTS_ENV, envConfig);
 
@@ -37,7 +35,7 @@ if (envConfig.report) {
   });
 }
 
-const watch = envConfig.watch;
+const { watch } = envConfig;
 
 // 构建保持监听状态
 if (watch) {
@@ -79,9 +77,7 @@ new Promise((resolve, reject) => {
 
       // Add additional information for postcss errors
       if (Object.prototype.hasOwnProperty.call(err, 'postcssNode')) {
-        errMessage +=
-          '\nCompileError: Begins at CSS selector ' +
-          err['postcssNode'].selector;
+        errMessage += `\nCompileError: Begins at CSS selector ${err.postcssNode.selector}`;
       }
       messages = formatWebpackMessages({
         errors: [errMessage],
@@ -117,9 +113,9 @@ new Promise((resolve, reject) => {
         console.log(chalk.yellow('编译时存在警告。\n'));
         console.log(warnings.join('\n\n'));
         console.log(
-          '使用eslint忽略检测将 ' +
-            chalk.cyan('// eslint-disable-next-line') +
-            ' 添加到前一行。\n'
+          `使用eslint忽略检测将 ${chalk.cyan(
+            '// eslint-disable-next-line'
+          )} 添加到前一行。\n`
         );
       } else {
         // 打包成功后的stats处理
@@ -135,14 +131,18 @@ new Promise((resolve, reject) => {
           );
         }
       }
-      !watch && process.exit(0);
+      if (!watch) {
+        process.exit(0);
+      }
     },
     (err) => {
       error(new Error('构建失败并出现错误。'));
       if (err) {
-        err.message ? error(err.message) : error(err);
+        error(err.message ? err.message : err);
       }
-      !watch && process.exit(1);
+      if (!watch) {
+        process.exit(1);
+      }
     }
   )
   .catch((err) => {
@@ -150,5 +150,7 @@ new Promise((resolve, reject) => {
     if (err && err.message) {
       console.log(err.message);
     }
-    !watch && process.exit(1);
+    if (!watch) {
+      process.exit(1);
+    }
   });
