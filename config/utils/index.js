@@ -1,6 +1,5 @@
 ['logger', 'spinner'].forEach((key) => {
-  const filename = `./${key}`;
-  Object.assign(exports, filename);
+  Object.assign(exports, require(`./${key}`));
 });
 
 exports.chalk = require('chalk');

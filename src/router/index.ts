@@ -1,6 +1,6 @@
 import Router from 'vue-router';
 
-const Home = () => import('@/views/Home.vue');
+const Home = () => import('@/views/HomePage.vue');
 // const Foo = () => import(/* webpackChunkName: "sub-pages" */ './Foo.vue');
 // const Bar = () => import(/* webpackChunkName: "sub-pages" */ './Bar.vue');
 

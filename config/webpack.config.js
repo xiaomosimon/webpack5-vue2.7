@@ -126,31 +126,42 @@ module.exports = (webpackEnv, envConfig) => {
           ].filter(Boolean),
         },
         /* 处理tsx */
-        // {
-        //   test: /\.tsx$/,
-        //   exclude: /node_modules/,
-        //   use: [
-        //     hasMultipleCores && {
-        //       loader: 'thread-loader', // 多线程
-        //       options: {
-        //         // This is a feature of `babel-loader` for webpack (not Babel itself).
-        //         // It enables caching results in ./node_modules/.cache/babel-loader/
-        //         // directory for faster rebuilds.
-        //         cacheDirectory: true,
-        //         // set it to false -- your project may benefit from this if it transpiles thousands of files.
-        //         cacheCompression: false,
-        //       },
-        //     },
-        //     {
-        //       loader: 'ts-loader',
-        //       options: {
-        //         transpileOnly: true,
-        //         happyPackMode: isEnvProduction, // 配合fork-ts-checker-webpack-plugin使用做多线程
-        //         appendTsxSuffixTo: ['\\.vue$'], // tsx
-        //       },
-        //     },
-        //   ].filter(Boolean),
-        // },
+        {
+          test: /\.tsx$/,
+          exclude: /node_modules/,
+          use: [
+            hasMultipleCores && {
+              loader: 'thread-loader', // 多线程
+              options: {
+                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                // It enables caching results in ./node_modules/.cache/babel-loader/
+                // directory for faster rebuilds.
+                cacheDirectory: true,
+                // set it to false -- your project may benefit from this if it transpiles thousands of files.
+                cacheCompression: false,
+              },
+            },
+            {
+              loader: 'babel-loader',
+              options: {
+                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                // It enables caching results in ./node_modules/.cache/babel-loader/
+                // directory for faster rebuilds.
+                cacheDirectory: true,
+                // set it to false -- your project may benefit from this if it transpiles thousands of files.
+                cacheCompression: false,
+              },
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                transpileOnly: true,
+                happyPackMode: isEnvProduction, // 配合fork-ts-checker-webpack-plugin使用做多线程
+                appendTsxSuffixTo: ['\\.vue$'], // tsx
+              },
+            },
+          ].filter(Boolean),
+        },
         /* 处理css */
         {
           test: /\.css$/,

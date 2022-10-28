@@ -11,6 +11,8 @@
     "eslint": "eslint ./"
   },
   "dependencies": {
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.4.0",
+    "@vue/babel-preset-jsx": "^1.4.0",
     "pinia": "^2.0.23",
     "vue": "2.7.13",
     "vue-router": "3.6.5"

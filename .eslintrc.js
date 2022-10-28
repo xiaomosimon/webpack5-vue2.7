@@ -4,21 +4,26 @@ module.exports = {
     node: true,
     browser: true,
   },
-  parser: 'vue-eslint-parser',
-  plugins: ['@typescript-eslint', 'import'],
+  parser: 'vue-eslint-parser', // 替代了@typescript-eslint/parser
+  plugins: [
+    '@typescript-eslint',
+    'import', // 添加eslint-plugin-import对typeScript支持 eslint-import-resolver-typescript
+  ],
   extends: [
-    'airbnb-base',
+    'airbnb-base', // eslint-config-airbnb-base + eslint-plugin-import
     'plugin:@typescript-eslint/recommended',
     'plugin:vue/recommended',
     'prettier',
   ],
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    // eslint-import-resolver-typescript
     'import/resolver': {
-      node: {
-        extensions: ['.js', '.ts', '.tsx'],
-      },
       typescript: {
         alwaysTryTypes: true,
+        project: './tsconfig.json',
       },
     },
   },
@@ -28,7 +33,13 @@ module.exports = {
     ecmaVersion: 'latest',
     ecmaFeatures: {
       impliedStrict: false,
-      jsx: true,
+      jsx: false,
+    },
+    // vue-eslint-parser
+    vueFeatures: {
+      filter: false,
+      interpolationAsNonHTML: true,
+      styleCSSVariableInjection: true,
     },
   },
   rules: {
@@ -37,6 +48,14 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 1 : 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 1 : 0,
     'no-param-reassign': 0, // 重新分配参数值
+    'import/extensions': [
+      0,
+      {
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    // 'import/no-unresolved': 1, // eslint-import-resolver-typescript
   },
   globals: {
     webpackDefineEnvConfig: true, // 解决no-undef问题
@@ -46,8 +65,12 @@ module.exports = {
     {
       files: ['./config/**', './scripts/*.js', './*.js'],
       rules: {
+        //  eslint-plugin-import
         'import/no-extraneous-dependencies': 0, // 依赖无关的包
+        'import/no-dynamic-require': 0, // 禁止使用表达式调用 require()
+        // typescript
         '@typescript-eslint/no-var-requires': 0, // 除 import 语句外，不允许使用 require 语句
+        // other
         'global-require': 0,
         'no-nested-ternary': 0,
       },
