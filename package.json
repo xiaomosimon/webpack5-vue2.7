@@ -8,7 +8,8 @@
     "build": "node ./scripts/build.js",
     "start": "node ./scripts/start.js",
     "analyzer": "node ./scripts/build.js --report",
-    "eslint": "eslint ./"
+    "lint": "eslint .",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.4.0",
@@ -43,6 +44,8 @@
     "eslint-webpack-plugin": "^3.2.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "mini-css-extract-plugin": "^2.6.1",
     "minimist": "^1.2.7",
     "ora": "5.4.1",
@@ -81,5 +84,10 @@
   },
   "engines": {
     "node": ">= 16.18.0"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx}": [
+      "pnpm lint"
+    ]
   }
 }
