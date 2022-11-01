@@ -75,5 +75,15 @@ module.exports = {
         'no-nested-ternary': 0,
       },
     },
+    /**
+     * 因为ts已经对‘no-undef’支持的很好，不需要再用eslint。
+     * 规避声明文件类型和接口使用
+     */
+    {
+      files: ['*.ts', '*.tsx', '*.vue'],
+      rules: {
+        'no-undef': 0,
+      },
+    },
   ],
 };

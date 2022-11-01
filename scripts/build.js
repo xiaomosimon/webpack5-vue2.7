@@ -1,6 +1,5 @@
 const ANALYZER_PORT = 7676;
 const SCRIPTS_ENV = 'production';
-// const SCRIPTS_ENV = 'development';
 process.env.NODE_ENV = SCRIPTS_ENV;
 process.env.BABEL_ENV = SCRIPTS_ENV;
 
@@ -23,32 +22,26 @@ const printFileSizesAfterBuild = require('../config/utils/printFileSizesAfterBui
 
 const webpackConfig = configFactory(SCRIPTS_ENV, envConfig);
 
-// 代码分析
-if (envConfig.report) {
-  const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-  modifyConfig(webpackConfig, (config) => {
+const { watch } = envConfig;
+
+modifyConfig(webpackConfig, (config) => {
+  // 代码分析
+  if (envConfig.report) {
+    const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
     config.plugins.push(
       new BundleAnalyzerPlugin({
         analyzerPort: ANALYZER_PORT,
       })
     );
-  });
-}
-
-const { watch } = envConfig;
-
-// 构建保持监听状态
-if (watch) {
-  modifyConfig(webpackConfig, (config) => {
+  }
+  // 构建保持监听状态
+  if (watch) {
     config.watch = true;
     config.watchOptions = {
       ignored: /node_modules/,
     };
-  });
-}
-
-// 构建进度
-modifyConfig(webpackConfig, (config) => {
+  }
+  // 构建进度
   config.plugins.push(
     new Webpack.ProgressPlugin((percentage, message, ...args) => {
       changeSpinner({
@@ -109,27 +102,18 @@ new Promise((resolve, reject) => {
 })
   .then(
     ({ stats, warnings }) => {
+      // 打包成功后的stats处理
+      log(printFileSizesAfterBuild(stats, paths.appBuild));
       if (warnings.length) {
         console.log(chalk.yellow('编译时存在警告。\n'));
         console.log(warnings.join('\n\n'));
-        console.log(
-          `使用eslint忽略检测将 ${chalk.cyan(
-            '// eslint-disable-next-line'
-          )} 添加到前一行。\n`
-        );
       } else {
-        // 打包成功后的stats处理
-        log(printFileSizesAfterBuild(stats, paths.appBuild));
         // 打包完成后其他处理
-        if (envConfig.report) {
-          done(
-            `构建完成，性能分析程序运行在: http://localhost:${ANALYZER_PORT}`
-          );
-        } else {
-          done(
-            `构建完成，项目目录: ${chalk.cyan(paths.appBuild)} , 可进行部署。`
-          );
-        }
+        done(
+          envConfig.report
+            ? `构建完成，性能分析程序运行在: http://localhost:${ANALYZER_PORT}`
+            : `构建完成，项目目录: ${chalk.cyan(paths.appBuild)} , 可进行部署。`
+        );
       }
       if (!watch) {
         process.exit(0);

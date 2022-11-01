@@ -107,6 +107,12 @@ pnpm start --open
   }
   ```
 
+### Eslint规则
+
+- vue官方[https://v2.cn.vuejs.org/v2/style-guide/]
+
+
+- airbnb官方[https://github.com/airbnb/javascript]
 
 
 ## 配置难点参考
@@ -315,6 +321,11 @@ module.exports = {
 
 ### 代码校验
 
+no-undef lint 规则:
+
+https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TROUBLESHOOTING.md#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+
+
 
 
 #### 构建配置代码校验
@@ -350,3 +361,10 @@ module.exports = {
 
 
 #### husky
+
+
+### UI使用
+
+#### ant design vue 1.7.8
+
+less问题：https://blog.csdn.net/Coder_xiaoxu/article/details/119082556
