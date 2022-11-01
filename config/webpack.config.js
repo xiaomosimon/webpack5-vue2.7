@@ -188,73 +188,106 @@ module.exports = (webpackEnv, envConfig) => {
             },
           ],
         },
+        /* 处理less */
+        {
+          test: /\.less$/,
+          use: [
+            isEnvProduction
+              ? {
+                  loader: MiniCssExtractPlugin.loader,
+                }
+              : {
+                  loader: 'style-loader',
+                },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+                importLoaders: 2,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+              },
+            },
+            {
+              loader: 'less-loader',
+              options: {
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+                lessOptions: require('./theme/lessOptions.js'), // 用于antd 主题配置
+              },
+            },
+          ],
+        },
         /* 处理scss */
-        {
-          test: /\.scss$/,
-          use: [
-            isEnvProduction
-              ? {
-                  loader: MiniCssExtractPlugin.loader,
-                }
-              : {
-                  loader: 'style-loader',
-                },
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-                importLoaders: 2,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
-            },
-          ],
-        },
+        // {
+        //   test: /\.scss$/,
+        //   use: [
+        //     isEnvProduction
+        //       ? {
+        //           loader: MiniCssExtractPlugin.loader,
+        //         }
+        //       : {
+        //           loader: 'style-loader',
+        //         },
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //         importLoaders: 2,
+        //       },
+        //     },
+        //     {
+        //       loader: 'postcss-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //       },
+        //     },
+        //     {
+        //       loader: 'sass-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //       },
+        //     },
+        //   ],
+        // },
         /* 处理sass */
-        {
-          test: /\.sass$/,
-          use: [
-            isEnvProduction
-              ? {
-                  loader: MiniCssExtractPlugin.loader,
-                }
-              : {
-                  loader: 'style-loader',
-                },
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-                importLoaders: 2,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-                sassOptions: {
-                  indentedSyntax: true,
-                },
-              },
-            },
-          ],
-        },
+        // {
+        //   test: /\.sass$/,
+        //   use: [
+        //     isEnvProduction
+        //       ? {
+        //           loader: MiniCssExtractPlugin.loader,
+        //         }
+        //       : {
+        //           loader: 'style-loader',
+        //         },
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //         importLoaders: 2,
+        //       },
+        //     },
+        //     {
+        //       loader: 'postcss-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //       },
+        //     },
+        //     {
+        //       loader: 'sass-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //         sassOptions: {
+        //           indentedSyntax: true,
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
         /* 内置loader处理其他文件 */
         /* 处理svg */
         {
@@ -385,6 +418,11 @@ module.exports = (webpackEnv, envConfig) => {
             },
           }),
       ].filter(Boolean),
+    },
+    performance: {
+      hints: false && 'warning',
+      maxAssetSize: 1024 * 1024, // 1M，默认 244KB
+      maxEntrypointSize: 1024 * 1024, // 1M 默认 244KB
     },
     plugins: [
       // 定义全局变量
