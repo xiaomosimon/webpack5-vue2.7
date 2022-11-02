@@ -82,6 +82,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx', '*.vue'],
       rules: {
+        "no-shadow": 0,
         'no-undef': 0,
       },
     },

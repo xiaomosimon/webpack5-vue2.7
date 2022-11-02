@@ -1,69 +1,47 @@
 <template>
-  <a-layout-header style="background: #fff; padding:0 16px;">
-    <a-space align="center" :size="8">
+  <a-layout-header style="background: #fff;">
+    <a-row type="flex" align="middle" justify="space-between">
       <a-breadcrumb>
         <a-breadcrumb-item v-for="breadcrumbRoute in breadcrumbRoutes" :key="breadcrumbRoute.path">
           <span v-if="breadcrumbRoute.isCurrentPage">{{ breadcrumbRoute.i18n }}</span>
           <router-link v-else :to="breadcrumbRoute.path">{{ breadcrumbRoute.i18n }}</router-link>
         </a-breadcrumb-item>
       </a-breadcrumb>
-    </a-space>
+      <a-space size="large">
+        <a @click="e => e.preventDefault()">帮助中心</a>
+        <a-dropdown :trigger="['click']">
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            {{ $t(`common.${selectedLocale}`) }}
+            <a-icon type="down" />
+          </a>
+          <a-menu slot="overlay" @click="onClick">
+            <a-menu-item
+v-for="menuLocale in props.menuLocales" :key="menuLocale"
+              :disabled="menuLocale === selectedLocale">
+              {{ $t(`common.${menuLocale}`) }}
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </a-space>
+    </a-row>
   </a-layout-header>
 </template>
 <script lang="ts" setup>
 import { useRoute } from 'vue-router/composables';
-import { pageRoutes, PageRoute } from '@/utils/constant';
-import { computed } from 'vue';
+import { useBreadcrumbRoutes } from './hooks/useBreadcrumbRoutes';
 
-interface BreadcrumbRoute extends PageRoute {
-  isCurrentPage?: boolean;
+const breadcrumbRoutes = useBreadcrumbRoutes(useRoute());
+
+const props = defineProps<{
+  selectedLocale: LocalesUnion,
+  menuLocales: Array<string>
+}>();
+
+const emit = defineEmits<{
+  (e: 'locale-change', localeKey: LocalesUnion): void
+}>();
+
+function onClick({ key }: { key: LocalesUnion }) {
+  emit('locale-change', key);
 }
-
-type BreadcrumbRoutes = Array<BreadcrumbRoute>;
-
-function backBreadcrumbRoutes(routePath: string, routeChildren: Array<PageRoute>): BreadcrumbRoutes {
-  const foundRoute = routeChildren.find((v) => routePath.includes(v.path));
-  if (!foundRoute) {
-    return [];
-  }
-  const list: BreadcrumbRoutes = [{
-    ...foundRoute,
-    isCurrentPage: foundRoute.path === routePath
-  }];
-  if (foundRoute.siblingParentPath) {
-    const foundParentRoute = routeChildren.find((v) => v.path === foundRoute.siblingParentPath);
-    if (foundParentRoute) {
-      list.unshift({
-        ...foundParentRoute,
-        isCurrentPage: false
-      });
-    }
-  }
-  if (foundRoute.children) {
-    return list.concat(...backBreadcrumbRoutes(routePath, foundRoute.children));
-  }
-  return list;
-}
-
-const route = useRoute();
-
-const breadcrumbRoutes = computed<BreadcrumbRoutes>(() => {
-  const routePath = route.path;
-  const foundRoute = pageRoutes.find((v) => routePath.includes(v.path));
-  if (!foundRoute) {
-    return [];
-  }
-  if (foundRoute.children) {
-    return backBreadcrumbRoutes(routePath, foundRoute.children);
-  }
-  return [{
-    ...foundRoute,
-    isCurrentPage: foundRoute.path === routePath
-  }];
-});
-
 </script>
-
-<style scoped>
-
-</style>

@@ -107,6 +107,8 @@ pnpm start --open
   }
   ```
 
+
+
 ### Eslint规则
 
 - vue官方[https://v2.cn.vuejs.org/v2/style-guide/]
@@ -115,9 +117,8 @@ pnpm start --open
 - airbnb官方[https://github.com/airbnb/javascript]
 
 
+
 ## 配置难点参考
-
-
 
 经过几天的阅读webpack5文章和文档，vue2.7发布到现在版本的修订，自己开始配置这个Webpack5 + Vue2.7 + TypeScript + Eslint的项目。
 实现后成就感不错，实践中遇见问题抠键盘+抠脑壳，谷歌，stackoverflow，百度解决方案，然后尝试解决问题，最后fix，确实不容易呀~
@@ -126,8 +127,6 @@ pnpm start --open
 
 
 ### 代码解析问题
-
-
 
 #### vue2.7.x
 
@@ -139,7 +138,7 @@ pnpm start --open
 
 依赖包使用`vue-loader@15.10.0`，因为现在2.7.13已经支持compositionAPI，不需要根据尤大大之前发布的博客说依赖下载`vue-demi`了。
 
-**webpack.config.js配置**
+###### webpack.config.js配置
 ```javascript
 const { VueLoaderPlugin } = require('vue-loader');
 module.exports = {
@@ -169,7 +168,7 @@ vue-loader其实对vue文件进行了type分析，像template，script，style�
 
 
 
-##### style解析
+##### Style解析
 
 这里不赘述什么css,sass/scss,MiniCssExtractPlugin这些简单的配置，这些都可以从vue-loader文档中获取，相关链接：https://vue-loader.vuejs.org/guide/pre-processors.html
 
@@ -178,7 +177,7 @@ vue-loader其实对vue文件进行了type分析，像template，script，style�
 **！！！不要完全相信文档，试了你就知道，不适用vue2.7！！！请继续使用`style-loader`，并下载最新版，不然你运行起来是白板！！！**
 
 配置简单展示下：
-**webpack.config.js配置**
+###### webpack.config.js配置
 ```javascript
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
@@ -220,7 +219,7 @@ module.exports = {
 
 
 
-#### jsx/tsx 😈，蓝瘦，🍄
+##### JSX/TSX 😈，蓝瘦，🍄
 
 经历过很多的尝试，想着会有概率使用jsx方式去写组件，那么概率会去引入vue文件下，script就会被加上`<script lang="ts" setup>`，记住这个原则！！！
 
@@ -228,12 +227,12 @@ module.exports = {
 
 回顾原则，我们记住vue文件解析script存在lang="ts"生成ts标识，交给`ts-loader`编译，检测到**jsx**就要让`babel-loader`去处理，检测**tsx**就要用`ts-loader`先处理，再用`babel-loader`处理，所以`babel-loader`就很重要了，那么babel相关的预处理器和插件也就很重要了。
 
-**基本的babel依赖就不赘述了，罗列几个重要的，只要这样处理就莫问题：**
+###### 基本的babel依赖就不赘述了，罗列几个重要的，只要这样处理就莫问题：
 1. 针对ts/tsx，要使用`@babel/preset-typescript`；
 2. 针对jsx，要使用`@vue/babel-preset-jsx`和`@vue/babel-helper-vue-jsx-merge-props`，这个是用于vue2的，且支持compositionAPI的，下方为提供详细配置；
 3. 针对jsx/tsx要使用`ts-loader`配置appendTsxSuffixTo和appendTsSuffixTo，不然也解析不了，不这样做，浏览器白板伺候。
 
-**babel.config.js配置**
+###### babel.config.js配置
 ```javascript
 module.exports = {
   presets: [
@@ -247,7 +246,7 @@ module.exports = {
   ]
 };
 ```
-**webpack.config.js配置**
+###### webpack.config.js配置
 ```javascript
 module.exports = {
   rules: [
@@ -319,6 +318,140 @@ module.exports = {
 
 
 
+#### vue-router 3.6.5
+
+支持使用`import { useRoute, useRouter } from 'vue-router/composables'`等hooks，兼容 Vue2.7 CompositionAPI写法。
+
+更多参考链接：https://github.com/vuejs/vue-router/blob/dev/CHANGELOG.md
+
+
+
+#### vue-i18n 8.28.2
+
+需要下载`vue-i18n-composable`包来兼容 Vue2.7 CompositionAPI写法。
+
+```javascript
+import { useI18n } from 'vue-i18n-composable';
+
+const i18n = useI18n();
+
+i18n.locale.value = 'en';
+```
+
+更多参考链接：https://github.com/intlify/vue-i18n-composable
+
+
+
+#### pinia
+
+##### pinia应用问题
+
+###### 报错
+```shell
+fix: Error: 🍍: Store "counter" is built using the setup syntax and does not implement $reset().
+```
+
+###### 原因和解决
+```typescript
+// fixPiniaResetPlugin.ts
+import cloneDeep from 'lodash.clonedeep'; // 可自行选择deep clone方式
+import { PiniaPluginContext } from 'pinia';
+
+export default ({ store }: PiniaPluginContext) => {
+  const initialState = cloneDeep(store.$state);
+  store.$reset = () => store.$patch(cloneDeep(initialState));
+};
+
+
+// main.ts
+import { PiniaVuePlugin, createPinia } from 'pinia';
+import fixPiniaResetPlugin from './plugins/fixPiniaResetPlugin';
+
+const pinia = createPinia();
+pinia.use(fixPiniaResetPlugin);
+Vue.use(PiniaVuePlugin); // 解决pinia $reset问题
+
+new Vue({
+  render: (h) => h(App),
+  pinia,
+}).$mount('#app');
+```
+
+
+
+#### ant design vue 1.7.8
+
+##### 按需引入方式
+
+需要下载babel-plugin-import包来作用按需引入。
+
+```javascript
+// babel.config.js
+module.exports = {
+  plugins: [
+    [
+      'import', // babel-plugin-import antd 按需引入
+      {
+        libraryName: 'ant-design-vue',
+        libraryDirectory: 'es',
+        style: 'css',
+      },
+    ],
+  ],
+}
+```
+
+```typescript
+// importAntdPlugin.ts
+/**
+ * 引入antd组件
+ */
+import { FormModel, Input, Button } from 'ant-design-vue';
+import { PluginObject } from 'vue';
+
+const importAntdPlugin: PluginObject<null> = {
+  install(Vue) {
+    Vue.use(FormModel);
+    Vue.use(Input);
+    Vue.use(Button);
+  },
+};
+export default importAntdPlugin;
+
+
+// main.ts
+import importAntdPlugin from './plugins/importAntdPlugin';
+import 'ant-design-vue/dist/antd.less';
+
+Vue.use(importAntdPlugin); // ant导入组件
+```
+
+**如果报错less相关，那么请继续看less应用问题**
+
+
+
+##### less应用问题
+
+###### 报错
+
+```shell
+Syntax Error:
+
+    position: absolute;
+    top: 8px + @font-size-base * @line-height-base / 2 - @font-size-base / 2;
+  ^
+```
+
+###### 原因和解决
+
+less 在第 7 版本改变了原有的除法运算，所以无法识别。
+
+下载 less-loader 的6.x.x版本，建议下载6的最后个版本；
+
+参考原文链接：https://blog.csdn.net/Coder_xiaoxu/article/details/119082556
+
+
+
 ### 代码校验
 
 no-undef lint 规则:
@@ -362,9 +495,3 @@ https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TR
 
 #### husky
 
-
-### UI使用
-
-#### ant design vue 1.7.8
-
-less问题：https://blog.csdn.net/Coder_xiaoxu/article/details/119082556

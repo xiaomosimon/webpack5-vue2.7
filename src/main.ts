@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import { PiniaVuePlugin, createPinia } from 'pinia';
 import VueRouter from 'vue-router';
-import App from './App.vue';
-import router from './router';
 import fixPiniaResetPlugin from './plugins/fixPiniaResetPlugin';
 import importAntdPlugin from './plugins/importAntdPlugin';
+import router from './router';
+import App from './App.vue';
+import i18n from './i18n';
 import './styles/main.less';
+
 
 Vue.use(importAntdPlugin); // ant导入组件
 
@@ -21,4 +23,5 @@ new Vue({
   render: (h) => h(App),
   pinia,
   router,
+  i18n,
 }).$mount('#app');
