@@ -1,4 +1,4 @@
-import { routes } from '@/router';
+import { baseRoutes } from '@/router/routes';
 import { RouteConfig } from 'vue-router';
 
 export interface PageRoute {
@@ -20,18 +20,16 @@ type PageRouteConfig = RouteConfig & {
 
 type RoutesArray = Array<PageRouteConfig>;
 
-function backPageRoute(routesSource: RoutesArray) {
-  return routesSource.map((v) => {
+function backPageRoutes(source: RoutesArray) {
+  return source.map((v) => {
     const pageRoute: PageRoute = {
       path: v.path,
       ...v.meta,
     };
     if (v.children) {
-      pageRoute.children = backPageRoute(v.children);
+      pageRoute.children = backPageRoutes(v.children);
     }
     return pageRoute;
   });
 }
-export const pageRoutes = backPageRoute(routes[0].children as RoutesArray);
-
-export const abc = 1;
+export const pageRoutes = backPageRoutes(baseRoutes[0].children as RoutesArray);

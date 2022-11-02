@@ -54,6 +54,8 @@ specifiers:
   typescript: ^4.8.4
   vue: 2.7.13
   vue-eslint-parser: ^9.1.0
+  vue-i18n: 8.28.2
+  vue-i18n-composable: ^2.0.0
   vue-loader: 15.10.0
   vue-router: 3.6.5
   vue-template-compiler: ^2.7.13
@@ -71,6 +73,8 @@ dependencies:
   moment: 2.29.4
   pinia: 2.0.23_xjcbg5znturqejtkpd33hx726m
   vue: 2.7.13
+  vue-i18n: 8.28.2_vue@2.7.13
+  vue-i18n-composable: 2.0.0_vue-i18n@8.28.2+vue@2.7.13
   vue-router: 3.6.5_vue@2.7.13
 
 devDependencies:
@@ -6578,6 +6582,24 @@ packages:
   /vue-hot-reload-api/2.3.4:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
     dev: true
+
+  /vue-i18n-composable/2.0.0_vue-i18n@8.28.2+vue@2.7.13:
+    resolution: {integrity: sha512-oCiX+xoNZKISv7/G1ZtSpi4/E16mQnI5DkZlBlEt++YVj6PZBCyqaiNotfzqDXz8TODnugi8sM39x+MRe+8ziA==}
+    peerDependencies:
+      vue: '>=2.7 <3'
+      vue-i18n: '>=8 <9'
+    dependencies:
+      vue: 2.7.13
+      vue-i18n: 8.28.2_vue@2.7.13
+    dev: false
+
+  /vue-i18n/8.28.2_vue@2.7.13:
+    resolution: {integrity: sha512-C5GZjs1tYlAqjwymaaCPDjCyGo10ajUphiwA922jKt9n7KPpqR7oM1PCwYzhB/E7+nT3wfdG3oRre5raIT1rKA==}
+    peerDependencies:
+      vue: ^2
+    dependencies:
+      vue: 2.7.13
+    dev: false
 
   /vue-loader/15.10.0_m252fu66fivcrdajfhoxhvxrne:
     resolution: {integrity: sha512-VU6tuO8eKajrFeBzMssFUP9SvakEeeSi1BxdTH5o3+1yUyrldp8IERkSdXlMI2t4kxF2sqYUDsQY+WJBxzBmZg==}

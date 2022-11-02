@@ -2,15 +2,23 @@ interface LocaleLanguageInterface {
   [key: string]: string;
 }
 
-declare module 'ant-design-vue/lib/locale-provider/zh_CN' {
-  const ZH_CN: LocaleLanguageInterface;
+type LocalesTuple = ['enGB', 'zhCN', 'deDE'];
+type LocalesUnion = LocalesTuple[number];
 
-  export default ZH_CN;
+declare module 'ant-design-vue/lib/locale-provider/en_GB' {
+  const enGB: LocaleLanguageInterface;
+
+  export default enGB;
 }
 
+declare module 'ant-design-vue/lib/locale-provider/zh_CN' {
+  const zhCN: LocaleLanguageInterface;
+
+  export default zhCN;
+}
 
 declare module 'ant-design-vue/lib/locale-provider/de_DE' {
-  const DE_DE: LocaleLanguageInterface;
+  const deDE: LocaleLanguageInterface;
 
-  export default DE_DE;
+  export default deDE;
 }
