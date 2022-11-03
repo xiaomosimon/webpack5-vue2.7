@@ -13,7 +13,7 @@
       </a-form-model-item>
       <a-form-model-item>
         <a-checkbox>Remember me</a-checkbox>
-        <a class="login-form-forgot" href="">
+        <a class="login-form-forgot" @click="e => e.preventDefault()">
           Forgot password
         </a>
         <a-button class="login-form-button" type="primary" @click="login">登录</a-button>
@@ -25,8 +25,12 @@
 import { ref } from 'vue';
 import { FormModel, message } from 'ant-design-vue';
 import { useRouter } from 'vue-router/composables';
+// eslint-disable-next-line import/no-cycle
+import { useUserStore } from '@/store/user'; // Reason: router/routes 引入组件
 
 const router = useRouter();
+const userStore = useUserStore();
+
 const form = ref<{
   username: string,
   password: string
@@ -49,12 +53,20 @@ const rules = {
 };
 
 function login() {
-  LoginForm.value?.validate(valid => {
+  LoginForm.value?.validate(async (valid) => {
     if (valid) {
-      if (form.value.username === 'admin' && form.value.password === '666666') {
-        router.replace('/');
+      const res = await userStore.fetchUserInfo(form.value);
+      if (res.code !== 0) {
+        message.error(res.message);
+        return;
+      }
+      const { role } = userStore;
+      if (role === 'shop') {
+        router.replace('/shopSetting');
+      } else if (role) {
+        router.replace('/dashboard');
       } else {
-        message.error('登录失败');
+        message.error('无权限访问，请联系管理员');
       }
     }
   });

@@ -17,7 +17,8 @@
 import { ConfigProvider } from 'ant-design-vue'; // config provider不能在render initial前注册
 import BasicLayoutHeader from "./BasicLayoutHeader.vue";
 import BasicLayoutSider from "./BasicLayoutSider.vue";
-import useLocale from './hooks/useLocale';
+// eslint-disable-next-line import/no-cycle
+import useLocale from './hooks/useLocale'; // Reason: router/routes 引入组件
 
 const {
   locale,
