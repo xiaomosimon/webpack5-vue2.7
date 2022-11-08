@@ -2,7 +2,25 @@
  * 引入antd组件
  */
 
-import { FormModel, Input, Button, Icon, Checkbox, Layout, Menu, Breadcrumb, Radio, Modal, Card, Row, Col, Dropdown, Space, DatePicker } from 'ant-design-vue';
+import {
+  FormModel,
+  Input,
+  Button,
+  Icon,
+  Checkbox,
+  Layout,
+  Menu,
+  Breadcrumb,
+  Radio,
+  Modal,
+  Card,
+  Row,
+  Col,
+  Dropdown,
+  Space,
+  DatePicker,
+  Divider
+} from 'ant-design-vue';
 import { PluginObject } from 'vue';
 
 const importAntdPlugin: PluginObject<null> = {
@@ -23,6 +41,7 @@ const importAntdPlugin: PluginObject<null> = {
     Vue.use(Dropdown);
     Vue.use(Space);
     Vue.use(DatePicker);
+    Vue.use(Divider);
   },
 };
 export default importAntdPlugin;

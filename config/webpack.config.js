@@ -439,6 +439,7 @@ module.exports = (webpackEnv, envConfig) => {
         template: paths.appHtml,
         ...(isEnvProduction
           ? {
+              filename: 'index.[contenthash:8].html',
               minify: {
                 // 使用html-minifier-terser
                 removeComments: true,

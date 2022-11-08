@@ -3,6 +3,7 @@ interface LocaleLanguageInterface {
 }
 
 type LocalesTuple = ['enGB', 'zhCN', 'deDE'];
+
 type LocalesUnion = LocalesTuple[number];
 
 declare module 'ant-design-vue/lib/locale-provider/en_GB' {

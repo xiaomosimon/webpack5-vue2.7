@@ -76,14 +76,14 @@ module.exports = {
       },
     },
     /**
-     * 因为ts已经对‘no-undef’支持的很好，不需要再用eslint。
-     * 规避声明文件类型和接口使用
+     * 对项目文件内规则
      */
     {
       files: ['*.ts', '*.tsx', '*.vue'],
       rules: {
-        "no-shadow": 0,
-        'no-undef': 0,
+        'no-shadow': 0, // 规避声明文件类型和接口使用
+        'no-undef': 0, // 因为ts已经对‘no-undef’支持的很好，不需要再用eslint
+        'import/no-cycle': [2, { maxDepth: 1 }], // 循环依赖
       },
     },
   ],

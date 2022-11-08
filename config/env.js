@@ -1,13 +1,15 @@
 // 获取命令行传参
 const parseArgv = require('minimist')(process.argv.slice(2));
 
+const generateRequestConfig = require('./request'); 
+
 // 解析运行时环境
 const buildEnvEnum = ['dev', 'local', 'qa', 'preview', 'prod'];
 const automatedDeploymentConfigArray = parseArgv._;
-let runEnv =
+let RUN_ENV =
   automatedDeploymentConfigArray[automatedDeploymentConfigArray.length - 1];
-if (!buildEnvEnum.includes(runEnv)) {
-  runEnv = 'dev';
+if (!buildEnvEnum.includes(RUN_ENV)) {
+  RUN_ENV = 'dev';
 }
 // 解析部署参数
 const automatedDeploymentConfig = automatedDeploymentConfigArray
@@ -20,6 +22,9 @@ const automatedDeploymentConfig = automatedDeploymentConfigArray
 // 删除运行时环境
 delete parseArgv._;
 
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
 // 解析命令行参数
 module.exports = Object.keys(parseArgv).reduce(
   (envConfig, key) => {
@@ -28,8 +33,9 @@ module.exports = Object.keys(parseArgv).reduce(
   },
   {
     ...automatedDeploymentConfig,
-    NODE_ENV: process.env.NODE_ENV || 'development',
-    RUN_ENV: runEnv,
+    NODE_ENV,
+    RUN_ENV,
     sourcemap: false,
+    ...generateRequestConfig(RUN_ENV, NODE_ENV),
   }
 );

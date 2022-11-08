@@ -1,10 +1,6 @@
-module.exports = {
-  '/api': {
-    target: 'http://localhost:3000',
-    pathRewrite: { '^/api': '' },
+module.exports = (envConfig) => ({
+  [envConfig.mainProxyTarget]: {
+    target: envConfig.baseURL,
+    pathRewrite: { [`^${envConfig.mainProxyTarget}`]: '' },
   },
-  '/test': {
-    target: 'http://localhost:3000',
-    pathRewrite: { '^/test': '' },
-  },
-};
+});

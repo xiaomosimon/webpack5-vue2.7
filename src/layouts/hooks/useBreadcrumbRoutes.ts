@@ -1,4 +1,4 @@
-import { pageRoutes, PageRoute } from '@/utils/constant';
+import { useRouterStore, PageRoute } from '@/store/router';
 import { computed, ComputedRef } from 'vue';
 import { Route } from 'vue-router';
 
@@ -44,9 +44,12 @@ export function useBreadcrumbRoutes(
 ): ComputedRef<BreadcrumbRoutes>;
 
 export function useBreadcrumbRoutes(route: Route) {
+  const userStore = useRouterStore();
   return computed<BreadcrumbRoutes>(() => {
     const routePath = route.path;
-    const foundRoute = pageRoutes.find((v) => routePath.includes(v.path));
+    const foundRoute = userStore.pageRoutes.find((v) =>
+      routePath.includes(v.path)
+    );
     if (!foundRoute) {
       return [];
     }
