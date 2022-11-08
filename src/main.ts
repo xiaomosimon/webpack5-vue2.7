@@ -10,7 +10,6 @@ import backCreatedI18n from './i18n';
 import App from './App.vue';
 import './styles/main.less';
 
-
 Vue.use(importAntdPlugin); // ant导入组件
 
 Vue.use(PiniaVuePlugin); // pinia的vue2安装方式

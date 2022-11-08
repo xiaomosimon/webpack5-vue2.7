@@ -5,7 +5,7 @@ import { RouteConfig } from 'vue-router';
 export const baseRoutes: Array<RouteConfig> = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "pre-basic" */ '@/layouts/BasicLayout.vue'),
+    component: () => import(/* webpackChunkName: "pre-base" */ '@/layouts/BaseLayout.vue'),
     children: [
       {
         path: '/dashboard',
@@ -70,7 +70,7 @@ export const baseRoutes: Array<RouteConfig> = [
       },
       {
         path: '/changePassword',
-        component: () => import(/* webpackChunkName: "pre-basic" */ '@/views/setting/ChangePassword.vue'),
+        component: () => import(/* webpackChunkName: "pre-base" */ '@/views/setting/ChangePassword.vue'),
         meta: {
           hide: true,
           i18n: 'changePassword',

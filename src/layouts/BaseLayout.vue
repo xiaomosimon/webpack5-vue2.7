@@ -1,8 +1,8 @@
 <template>
   <a-layout style="min-height: 100vh">
-    <basic-layout-sider :selected-locale="selectedLocaleKey" />
+    <base-layout-sider :selected-locale="selectedLocaleKey" />
     <a-layout>
-      <basic-layout-header
+      <base-layout-header
 :menu-locales="locales" :selected-locale="selectedLocaleKey"
         @locale-change="onLocaleChange" />
       <a-layout-content style="margin: 16px;">
@@ -15,10 +15,9 @@
 </template>
 <script lang="ts" setup>
 import { ConfigProvider } from 'ant-design-vue'; // config provider不能在render initial前注册
-import BasicLayoutHeader from "./BasicLayoutHeader.vue";
-import BasicLayoutSider from "./BasicLayoutSider.vue";
-// eslint-disable-next-line import/no-cycle
-import useLocale from './hooks/useLocale'; // Reason: router/routes 引入组件
+import BaseLayoutHeader from "./BaseLayoutHeader.vue";
+import BaseLayoutSider from "./BaseLayoutSider.vue";
+import useLocale from './hooks/useLocale';
 
 const {
   locale,

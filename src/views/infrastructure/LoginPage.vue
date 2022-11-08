@@ -25,8 +25,7 @@
 import { ref } from 'vue';
 import { FormModel, message } from 'ant-design-vue';
 import { useRouter } from 'vue-router/composables';
-// eslint-disable-next-line import/no-cycle
-import { useUserStore } from '@/store/user'; // Reason: router/routes 引入组件
+import { useUserStore } from '@/store/user';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -56,17 +55,15 @@ function login() {
   LoginForm.value?.validate(async (valid) => {
     if (valid) {
       const res = await userStore.fetchUserInfo(form.value);
-      if (res.code !== 0) {
-        message.error(res.message);
-        return;
-      }
-      const { role } = userStore;
-      if (role === 'shop') {
-        router.replace('/shopSetting');
-      } else if (role) {
-        router.replace('/dashboard');
-      } else {
-        message.error('无权限访问，请联系管理员');
+      if (res.data.code === 0) {
+        const { role } = userStore;
+        if (role === 'shop') {
+          router.replace('/shopSetting');
+        } else if (role) {
+          router.replace('/dashboard');
+        } else {
+          message.error('无权限访问，请联系管理员');
+        }
       }
     }
   });

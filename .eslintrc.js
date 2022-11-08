@@ -83,6 +83,7 @@ module.exports = {
       rules: {
         'no-shadow': 0, // 规避声明文件类型和接口使用
         'no-undef': 0, // 因为ts已经对‘no-undef’支持的很好，不需要再用eslint
+        'import/no-cycle': [2, { maxDepth: 1 }], // 循环依赖
       },
     },
   ],

@@ -23,7 +23,7 @@ const clearConsole = require('../config/utils/clearConsole');
 const configFactory = require('../config/webpack.config');
 
 const webpackConfig = configFactory('development', envConfig);
-const proxyConfig = require('../config/proxy');
+const proxyConfig = require('../config/proxy')(envConfig);
 const webpackDevServerConfig = require('../config/webpackDevServer.config')(
   proxyConfig,
   envConfig
@@ -64,6 +64,7 @@ compiler.hooks.done.tap({ name: 'ProgressPlugin' }, (stats) => {
     }
 
     const time = getCompileTime(stats);
+    clearConsole();
     done(
       `项目编译成功，用时${time}ms，程序运行在: ${
         webpackDevServerConfig.https ? 'https' : 'http'

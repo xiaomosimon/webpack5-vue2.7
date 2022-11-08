@@ -67,13 +67,9 @@ export default function useLocale() {
   async function onLocaleChange(localeKey: LocalesUnion) {
     try {
       const res = await userStore.fetchChangeUserInfo({ locale: localeKey });
-      if (res.code !== 0) {
-        message.error('设置失败');
-        return;
-      }
-      switchLocale(localeKey, true);
+      if (res.data.code === 0) switchLocale(localeKey, true);
     } catch (error) {
-      message.error('设置失败，请稍后再试');
+      message.error('语言设置失败，请稍后再试');
     }
   }
 

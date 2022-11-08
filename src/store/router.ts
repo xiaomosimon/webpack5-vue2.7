@@ -54,6 +54,7 @@ function backPageRoutePaths(source: Array<PageRoute>): Array<string> {
 export const useRouterStore = defineStore(
   'router',
   () => {
+
     const pageRoutes = ref<Array<PageRoute>>([]);
 
     const pageRoutePaths = computed(() => backPageRoutePaths(pageRoutes.value));
