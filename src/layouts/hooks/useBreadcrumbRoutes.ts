@@ -44,8 +44,8 @@ export function useBreadcrumbRoutes(
 ): ComputedRef<BreadcrumbRoutes>;
 
 export function useBreadcrumbRoutes(route: Route) {
-  const userStore = useRouterStore();
   return computed<BreadcrumbRoutes>(() => {
+    const userStore = useRouterStore();
     const routePath = route.path;
     const foundRoute = userStore.pageRoutes.find((v) =>
       routePath.includes(v.path)

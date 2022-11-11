@@ -6,6 +6,7 @@ import {
   FetchLoginParams,
   FetchChangeUserInfoParams,
 } from '@/request/userApis';
+import { useRouterStore } from './router';
 
 export type RolesTuple = ['admin', 'operator', 'shop'];
 
@@ -15,7 +16,6 @@ export interface UserInfo {
   token: string;
   username: string;
   password: string;
-  name: string;
   locale: LocalesUnion;
   role: RolesUnion;
 }
@@ -34,9 +34,32 @@ export const useUserStore = defineStore(
     );
 
     async function fetchUserInfo(params: FetchLoginParams) {
-      const res = await login(params);
-      if (res.data.code === 0 && res.data.content) {
+      if (params.username === 'admin') {
+        // TODO mock
+        const routerStore = useRouterStore();
+        const res: { data: { code: number; content: UserInfo } } = {
+          data: {
+            code: 0,
+            content: {
+              token: '123456',
+              ...params,
+              locale: 'zhCN',
+              role: 'admin',
+            },
+          },
+        };
+        token.value = res.data.content.token;
         userInfo.value = res.data.content;
+        routerStore.setPageRoutes(res.data.content.role);
+        return res;
+      }
+      const res = await login(params);
+      const content = res.data?.content;
+      if (res.data.code === 0 && content) {
+        userInfo.value = content;
+        token.value = content.token;
+        const routerStore = useRouterStore();
+        routerStore.setPageRoutes(content.role);
       }
       return res;
     }

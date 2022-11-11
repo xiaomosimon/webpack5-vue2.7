@@ -11,7 +11,6 @@ export default function useLocale() {
   const locales: LocalesTuple = ['enGB', 'zhCN', 'deDE'];
 
   const userStore = useUserStore();
-  const i18n = useI18n();
 
   const locale = ref<LocaleLanguageInterface>(enGB);
   const selectedLocaleKey = ref<LocalesUnion>(userStore.locale);
@@ -21,6 +20,7 @@ export default function useLocale() {
     importLocale: LocaleLanguageInterface,
     localeKey: LocalesUnion
   ) {
+    const i18n = useI18n();
     moment.locale(momentLocalKey);
     locale.value = importLocale;
     selectedLocaleKey.value = localeKey;

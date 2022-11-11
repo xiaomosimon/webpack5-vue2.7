@@ -8,8 +8,8 @@ export const baseRoutes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "pre-base" */ '@/layouts/BaseLayout.vue'),
     children: [
       {
-        path: '/dashboard',
-        component: () => import('@/views/DashboardPage.vue'),
+        path: '/mainDashboard',
+        component: () => import(/* webpackChunkName: "pre-base" */ '@/views/MainDashboardPage.vue'),
         meta: {
           i18n: 'dashboard',
           icon: 'home',
@@ -17,53 +17,45 @@ export const baseRoutes: Array<RouteConfig> = [
         },
       },
       {
-        path: '/shopSetting',
-        component: () => import(/* webpackChunkName: "pre-role-shop" */ '@/views/ShopSetting.vue'),
+        path: '/dashboard',
+        component: () => import(/* webpackChunkName: "pre-base" */ '@/views/ShopDashboardPage.vue'),
         meta: {
-          i18n: 'shopSetting',
+          i18n: 'shopDashboard',
           icon: 'home',
           roles: ['shop'],
         },
       },
       {
-        path: '/foo',
+        path: '/product',
         component: RouterViewLayout,
-        redirect: '/foo/list',
+        redirect: '/product/list',
         meta: {
-          i18n: 'foo',
+          i18n: 'product',
           icon: 'user',
-          roles: ['admin', 'operator'],
+          roles: ['admin', 'operator', 'shop'],
         },
         children: [
           {
-            path: '/foo/list',
+            path: '/product/list',
             component: () =>
               import(
-                /* webpackChunkName: "pre-foo" */ '@/views/foo/ListPage.vue'
+                /* webpackChunkName: "pre-product" */ '@/views/product/ListPage.vue'
               ),
             meta: {
-              i18n: 'fooList',
-              roles: ['admin', 'operator'],
+              i18n: 'productList',
+              roles: ['admin', 'operator', 'shop'],
             },
           },
           {
-            path: '/foo/edit',
+            path: '/product/edit',
             component: () =>
               import(
-                /* webpackChunkName: "pre-foo" */ '@/views/foo/EditPage.vue'
+                /* webpackChunkName: "pre-product" */ '@/views/product/EditPage.vue'
               ),
             meta: {
-              siblingParentPath: '/foo/list',
-              i18n: 'fooEdit',
-              roles: ['admin', 'operator'],
-            },
-          },
-          {
-            path: '/foo/operateHistory',
-            component: () => import(/* webpackChunkName: "pre-role-shop" */ '@/views/foo/OperateHistory.vue'),
-            meta: {
-              i18n: 'operateHistory',
-              roles: ['admin'],
+              siblingParentPath: '/product/list',
+              i18n: 'productEdit',
+              roles: ['admin', 'operator', 'shop'],
             },
           },
         ],
@@ -74,7 +66,7 @@ export const baseRoutes: Array<RouteConfig> = [
         meta: {
           hide: true,
           i18n: 'changePassword',
-          roles: ['admin', 'operator'],
+          roles: ['admin', 'operator', 'shop'],
         },
       },
     ],

@@ -8,6 +8,7 @@
 import { useRouter } from 'vue-router/composables';
 
 const router = useRouter();
+
 function backPage() {
   router.push({
     path: '/'
@@ -15,4 +16,6 @@ function backPage() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
