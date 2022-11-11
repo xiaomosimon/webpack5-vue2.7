@@ -25,12 +25,12 @@ export default function verifyRoutePermission(
       // 初始地址跳首页
       // 判断角色，进行首页跳转
       switch (userStore.role) {
-        case 'admin':
-        case 'operator':
+        case 'shop':
           next('/dashboard');
           break;
-        case 'shop':
-          next('/shopSetting');
+        case 'admin':
+        case 'operator':
+          next('/mainDashboard');
           break;
         default:
           message.error('无权限访问，请联系管理员');

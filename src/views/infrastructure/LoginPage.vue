@@ -1,5 +1,6 @@
 <template>
   <div id="components-form-demo-normal-login">
+    <h2>Vue2.7管理后台模板</h2>
     <a-form-model ref="LoginForm" class="login-form" :model="form" :rules="rules">
       <a-form-model-item prop="username">
         <a-input v-model="form.username" placeholder="Username">
@@ -12,12 +13,9 @@
         </a-input>
       </a-form-model-item>
       <a-form-model-item>
-        <a-checkbox>Remember me</a-checkbox>
-        <a class="login-form-forgot" @click="e => e.preventDefault()">
-          Forgot password
-        </a>
         <a-button class="login-form-button" type="primary" @click="login">登录</a-button>
       </a-form-model-item>
+      <p>账号:admin</p>
     </a-form-model>
   </div>
 </template>
@@ -28,7 +26,6 @@ import { useRouter } from 'vue-router/composables';
 import { useUserStore } from '@/store/user';
 
 const router = useRouter();
-const userStore = useUserStore();
 
 const form = ref<{
   username: string,
@@ -54,13 +51,14 @@ const rules = {
 function login() {
   LoginForm.value?.validate(async (valid) => {
     if (valid) {
+      const userStore = useUserStore();
       const res = await userStore.fetchUserInfo(form.value);
       if (res.data.code === 0) {
         const { role } = userStore;
         if (role === 'shop') {
-          router.replace('/shopSetting');
-        } else if (role) {
           router.replace('/dashboard');
+        } else if (role) {
+          router.replace('/mainDashboard');
         } else {
           message.error('无权限访问，请联系管理员');
         }
@@ -74,14 +72,11 @@ function login() {
 #components-form-demo-normal-login {
   margin: 300px auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
   .login-form {
-    max-width: 300px;
-  }
-
-  .login-form-forgot {
-    float: right;
+    width: 300px;
   }
 
   .login-form-button {

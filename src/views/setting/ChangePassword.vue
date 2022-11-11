@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <h1>修改密码</h1>
-  </div>
+  <a-card title="修改密码">
+    <h1>Change Password</h1>
+  </a-card>
 </template>
-<script lang="ts" setup>
-
-</script>
-
-<style scoped></style>
