@@ -9,20 +9,20 @@
 ### 命令行参数
 
 **基本操作**
-```shell
+```sh
 -x 3 -n5 -ab --stats --beep=bool --name xxx foo bar -- local
 # 等价于 { _: [ 'foo', 'bar', 'local' ], x: 3, n: 5, a: true, b: true, stats: true, beep: 'bool', name: 'xxx' }
 ```
 
 **自动化部署配置尽量使用明确参数形式，如下**
-```shell
+```sh
 # `-- env` 固定在末尾
 # pnpm build value1 value2 -- env  等价于  {_:['value1', 'value2', 'env']}
 pnpm build a b -- prod
 ```
 
 **开发配置禁用明确参数形式，但可使用如下方式**
-```shell
+```sh
 # --variable  等价于  {_:[], variable: true}
 --a
 # --variable=value  等价于  {_:[], variable: 'value'}
@@ -37,7 +37,7 @@ pnpm build a b -- prod
 
 #### 可配置命令行参数
 
-```shell
+```sh
 # 生产
 pnpm build --watch
 
@@ -347,7 +347,7 @@ i18n.locale.value = 'en';
 ##### pinia应用问题
 
 ###### 报错
-```shell
+```sh
 fix: Error: 🍍: Store "counter" is built using the setup syntax and does not implement $reset().
 ```
 
@@ -434,7 +434,7 @@ Vue.use(importAntdPlugin); // ant导入组件
 
 ###### 报错
 
-```shell
+```sh
 Syntax Error:
 
     position: absolute;
@@ -495,3 +495,12 @@ https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TR
 
 #### husky
 
+已生成.husky/pre-commit文件，但需要初始化husky，所以需要执行以下指令：
+
+```sh
+npm pkg set scripts.prepare="husky install"
+npm run prepare
+npm pkg delete scripts.prepare
+# 新增npm/pnpm/yarn指令
+# npx husky add .husky/pre-commit 'npm newCommand'
+```
