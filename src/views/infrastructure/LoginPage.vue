@@ -1,7 +1,7 @@
 <template>
-  <div id="components-form-demo-normal-login">
+  <div class="h-screen flex flex-col justify-center items-center">
     <h2>Vue2.7管理后台模板</h2>
-    <a-form-model ref="LoginForm" class="login-form" :model="form" :rules="rules">
+    <a-form-model ref="LoginForm" class="w-80" :model="form" :rules="rules">
       <a-form-model-item prop="username">
         <a-input v-model="form.username" placeholder="Username">
           <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
@@ -13,7 +13,7 @@
         </a-input>
       </a-form-model-item>
       <a-form-model-item>
-        <a-button class="login-form-button" type="primary" @click="login">登录</a-button>
+        <a-button class="w-full" type="primary" @click="login">登录</a-button>
       </a-form-model-item>
       <p>账号:admin</p>
     </a-form-model>
@@ -67,20 +67,3 @@ function login() {
   });
 }
 </script>
-
-<style lang="less">
-#components-form-demo-normal-login {
-  margin: 300px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .login-form {
-    width: 300px;
-  }
-
-  .login-form-button {
-    width: 100%;
-  }
-}
-</style>
