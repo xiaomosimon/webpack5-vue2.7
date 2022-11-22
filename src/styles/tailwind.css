@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+* 添加important属性，避免全局设置
+*/
+@layer base {
+  .hidden-i {
+    @apply hidden !important;
+  }
+}
+
+/*
+* 解决antd样式被tailwind覆盖
+*/
+@layer base {
+  svg {
+    vertical-align: initial;
+  }
+}

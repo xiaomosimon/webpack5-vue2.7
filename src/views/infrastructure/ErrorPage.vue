@@ -15,7 +15,3 @@ function backPage() {
   });
 }
 </script>
-
-<style scoped>
-
-</style>

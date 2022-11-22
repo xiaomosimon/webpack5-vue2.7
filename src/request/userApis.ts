@@ -7,7 +7,7 @@ export interface FetchLoginParams {
 
 export interface FetchChangeUserInfoParams {
   password?: string;
-  locale?: LocalesUnion;
+  locale: LocalesUnion;
 }
 
 export const login = (params: FetchLoginParams) =>

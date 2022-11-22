@@ -1,5 +1,7 @@
 module.exports = {
   plugins: [
+    require('postcss-import'), // 构建时导入
+    require('tailwindcss'),
     [
       require('postcss-preset-env'), // 预设包含了autoprefixer
       {

@@ -22,11 +22,11 @@ const printFileSizesAfterBuild = require('../config/utils/printFileSizesAfterBui
 
 const webpackConfig = configFactory(SCRIPTS_ENV, envConfig);
 
-const { watch } = envConfig;
+const { watch, report } = envConfig;
 
 modifyConfig(webpackConfig, (config) => {
   // 代码分析
-  if (envConfig.report) {
+  if (report) {
     const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
     config.plugins.push(
       new BundleAnalyzerPlugin({
@@ -110,12 +110,12 @@ new Promise((resolve, reject) => {
       } else {
         // 打包完成后其他处理
         done(
-          envConfig.report
+          report
             ? `构建完成，性能分析程序运行在: http://localhost:${ANALYZER_PORT}`
             : `构建完成，项目目录: ${chalk.cyan(paths.appBuild)} , 可进行部署。`
         );
       }
-      if (!watch) {
+      if (!watch && !report) {
         process.exit(0);
       }
     },

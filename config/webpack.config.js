@@ -221,73 +221,6 @@ module.exports = (webpackEnv, envConfig) => {
             },
           ],
         },
-        /* 处理scss */
-        // {
-        //   test: /\.scss$/,
-        //   use: [
-        //     isEnvProduction
-        //       ? {
-        //           loader: MiniCssExtractPlugin.loader,
-        //         }
-        //       : {
-        //           loader: 'style-loader',
-        //         },
-        //     {
-        //       loader: 'css-loader',
-        //       options: {
-        //         sourceMap: isEnvProduction && shouldUseSourceMap,
-        //         importLoaders: 2,
-        //       },
-        //     },
-        //     {
-        //       loader: 'postcss-loader',
-        //       options: {
-        //         sourceMap: isEnvProduction && shouldUseSourceMap,
-        //       },
-        //     },
-        //     {
-        //       loader: 'sass-loader',
-        //       options: {
-        //         sourceMap: isEnvProduction && shouldUseSourceMap,
-        //       },
-        //     },
-        //   ],
-        // },
-        /* 处理sass */
-        // {
-        //   test: /\.sass$/,
-        //   use: [
-        //     isEnvProduction
-        //       ? {
-        //           loader: MiniCssExtractPlugin.loader,
-        //         }
-        //       : {
-        //           loader: 'style-loader',
-        //         },
-        //     {
-        //       loader: 'css-loader',
-        //       options: {
-        //         sourceMap: isEnvProduction && shouldUseSourceMap,
-        //         importLoaders: 2,
-        //       },
-        //     },
-        //     {
-        //       loader: 'postcss-loader',
-        //       options: {
-        //         sourceMap: isEnvProduction && shouldUseSourceMap,
-        //       },
-        //     },
-        //     {
-        //       loader: 'sass-loader',
-        //       options: {
-        //         sourceMap: isEnvProduction && shouldUseSourceMap,
-        //         sassOptions: {
-        //           indentedSyntax: true,
-        //         },
-        //       },
-        //     },
-        //   ],
-        // },
         /* 内置loader处理其他文件 */
         /* 处理svg */
         {
@@ -462,6 +395,11 @@ module.exports = (webpackEnv, envConfig) => {
           filename: 'css/[name].[contenthash:8].css',
           chunkFilename: 'css/[name].[contenthash:8].css',
         }),
+      // 优化moment打包
+      new Webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
       // 复制文件
       isEnvProduction &&
         new CopyPlugin({

@@ -1,6 +1,6 @@
 <template>
   <a-layout-sider :width="siderWidth" theme="dark" :collapsed="collapsed" collapsible @collapse="onCollapse">
-    <div class="basic-layout-menu-logo" />
+    <div class="h-8 m-4 bg-slate-200">123123</div>
     <a-menu
 v-model="selectedKeys" :default-open-keys="[]" :open-keys="openedKeys" theme="dark" mode="inline"
       @select="onMenuSelect" @openChange="onOpenChange">
@@ -11,10 +11,10 @@ v-model="selectedKeys" :default-open-keys="[]" :open-keys="openedKeys" theme="da
           </span>
           <a-menu-item
 v-for="menuChildrenRoute in menuRoute.children" :key="menuChildrenRoute.path"
-            :class="{ 'block-hidden': menuChildrenRoute.siblingParentPath }">
+            :class="{ 'hidden-i hidden': menuChildrenRoute.siblingParentPath }">
             {{ menuChildrenRoute.i18n }}</a-menu-item>
         </a-sub-menu>
-        <a-menu-item v-else :key="menuRoute.path" :class="{ 'block-hidden': menuRoute.hide }">
+        <a-menu-item v-else :key="menuRoute.path" :class="{ 'hidden': menuRoute.hide }">
           <a-icon v-if="menuRoute.icon" :type="menuRoute.icon" />
           <span>{{ menuRoute.i18n }}</span>
         </a-menu-item>
@@ -69,15 +69,3 @@ function onOpenChange(openKeys: Array<string>) {
   oldOpenedKeys = openedKeys.value;
 }
 </script>
-
-<style lang="less">
-.basic-layout-menu-logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-  // height: 64px;
-  // border-right: 1px solid #e8e8e8;
-  // border-bottom: 1px solid #e8e8e8;
-  // padding: 16px;
-}
-</style>
