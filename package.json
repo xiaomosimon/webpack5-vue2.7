@@ -60,6 +60,7 @@
     "minimist": "^1.2.7",
     "ora": "5.4.1",
     "postcss": "^8.4.18",
+    "postcss-import": "^15.0.0",
     "postcss-loader": "^7.0.1",
     "postcss-preset-env": "^7.8.2",
     "prettier": "^2.7.1",
